@@ -13,16 +13,16 @@ public class PlayerSpawner : MonoBehaviour
         float randomnum = Mathf.Floor(Random.Range(0f, 4f));
         switch (randomnum) {
             case 0: 
-            Instantiate(Agent, new Vector3(50f, 1f, Random.Range(-50f, 50f)), Quaternion.identity);
+            Instantiate(Agent, new Vector3(55f, 1f, Random.Range(-50f, 50f)), Quaternion.identity);
             break;
             case 1: 
-            Instantiate(Agent, new Vector3(-50f, 1f, Random.Range(-50f, 50f)), Quaternion.identity);
+            Instantiate(Agent, new Vector3(-55f, 1f, Random.Range(-50f, 50f)), Quaternion.identity);
             break;
             case 2: 
-            Instantiate(Agent, new Vector3(Random.Range(-50f, 50f), 1f, 50f), Quaternion.identity);
+            Instantiate(Agent, new Vector3(Random.Range(-50f, 50f), 1f, 55f), Quaternion.identity);
             break;
             case 3: 
-            Instantiate(Agent, new Vector3(Random.Range(-50f, 50f), 1f, -50f), Quaternion.identity);
+            Instantiate(Agent, new Vector3(Random.Range(-50f, 50f), 1f, -55f), Quaternion.identity);
             break;
         }
 
