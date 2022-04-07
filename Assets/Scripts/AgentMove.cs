@@ -11,6 +11,8 @@ public class AgentMove : MonoBehaviour
     float senserange = 6f;
     [SerializeField]
     float energy = 10f;
+    [SerializeField]
+    float reproductionrate;
     Vector3 startingpos;
     [SerializeField]
     int foodcounter;
@@ -18,13 +20,18 @@ public class AgentMove : MonoBehaviour
     float time = 10f;
     bool timeup = false;
     public float startingspeed;
-    public float newspeed;
+    public float startingsense;
+    public float startingrepro;
 
     void Start()
     {
         agent = this.GetComponent<NavMeshAgent>();
-        startingspeed = Random.Range(2.5f, 10f);
+        startingspeed = Random.Range(3f, 10f);
         agent.speed = startingspeed;
+        startingsense = Random.Range(4f, 8f);
+        senserange = startingsense;
+        startingrepro = Random.Range(1f, 10f);
+        reproductionrate = startingrepro;
         agent.stoppingDistance = 2;
         startingpos = agent.transform.position;
         Wander();
@@ -32,7 +39,7 @@ public class AgentMove : MonoBehaviour
 
     void Update()
     {
-        energy -= (senserange * agent.speed * Time.deltaTime) / 30f;
+        energy -= (senserange * Mathf.Pow(agent.speed, 2) * Time.deltaTime) / 100f;
         time -= Time.deltaTime;
         if (!agent.pathPending)
         {
@@ -58,15 +65,17 @@ public class AgentMove : MonoBehaviour
             {
                 agent.SetDestination(startingpos);
                 timeup = true;
-            } 
-            if (time < -15f)
+                agent.speed = 5f;
+                if (time < -15f)
             {
                 timeup = false;
-                agent.speed = 5f;
+                agent.speed = startingspeed;
                 energy = 10f;
                 time = 10f;
                 Sex();
             }
+            } 
+            
         }
         
     }
@@ -113,8 +122,10 @@ public class AgentMove : MonoBehaviour
         else if (foodcounter >= 1)
         {
             foodcounter = 0;
-            
             GameObject obj = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity);
+            NavMeshAgent objAgent = obj.GetComponent<NavMeshAgent>();
+            obj.GetComponent<AgentMove>().startingspeed = Random.Range(startingspeed -.5f, startingspeed + .5f);
+            obj.GetComponent<AgentMove>().startingsense = Random.Range(startingsense -.5f, startingsense + .5f);
             
         }
     }
