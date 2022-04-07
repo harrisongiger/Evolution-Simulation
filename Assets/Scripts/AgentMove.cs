@@ -18,7 +18,9 @@ public class AgentMove : MonoBehaviour
     int foodcounter;
     [SerializeField]
     float time = 10f;
-    bool timeup = false;
+    public GameObject[] deletefood;
+
+    
     public float startingspeed;
     public float startingsense;
     public float startingrepro;
@@ -39,7 +41,7 @@ public class AgentMove : MonoBehaviour
 
     void Update()
     {
-        energy -= (senserange * Mathf.Pow(agent.speed, 2) * Time.deltaTime) / 100f;
+        energy -= (reproductionrate * senserange * Mathf.Pow(agent.speed, 2) * Time.deltaTime) / 1000f;
         time -= Time.deltaTime;
         if (!agent.pathPending)
         {
@@ -51,32 +53,32 @@ public class AgentMove : MonoBehaviour
                 }
             }
         }
-        if (energy > 0f)
+        if (time > 0f)
         {
-            InvokeRepeating("FoodSearch", 0f, 0.1f);
-        }
-        else
-        {
-            if (timeup == false)
+            if (energy > 0f)
             {
-                agent.SetDestination(agent.transform.position);
+                InvokeRepeating("FoodSearch", 0f, 0.1f);
+            } else 
+            {
+            agent.SetDestination(agent.transform.position);
             }
-            if (time <= 0f)
-            {
+        } else if (time <= 0f) {
                 agent.SetDestination(startingpos);
-                timeup = true;
-                agent.speed = 5f;
-                if (time < -15f)
-            {
-                timeup = false;
+                agent.speed = 20f;
+                if (time < -7f)
+                {
                 agent.speed = startingspeed;
                 energy = 10f;
                 time = 10f;
                 Sex();
-            }
-            } 
+                deletefood = GameObject.FindGameObjectsWithTag("Food");
+                foreach (GameObject Food in deletefood) {
+                    Destroy(gameObject);
+                }
+                }
+        } 
             
-        }
+        
         
     }
 
@@ -122,10 +124,23 @@ public class AgentMove : MonoBehaviour
         else if (foodcounter >= 1)
         {
             foodcounter = 0;
-            GameObject obj = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity);
-            NavMeshAgent objAgent = obj.GetComponent<NavMeshAgent>();
+            GameObject obj;
+            int rand = Random.Range(0, 100);
+            if (rand < 10 * reproductionrate) {
+                for (int i = 0; i < 2; i++) {
+            obj = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity); 
             obj.GetComponent<AgentMove>().startingspeed = Random.Range(startingspeed -.5f, startingspeed + .5f);
             obj.GetComponent<AgentMove>().startingsense = Random.Range(startingsense -.5f, startingsense + .5f);
+            obj.GetComponent<AgentMove>().startingrepro = Random.Range(startingrepro -.5f, startingrepro + .5f);
+
+                }
+            } else {
+            obj = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity);
+            obj.GetComponent<AgentMove>().startingspeed = Random.Range(startingspeed -.5f, startingspeed + .5f);
+            obj.GetComponent<AgentMove>().startingsense = Random.Range(startingsense -.5f, startingsense + .5f);
+            obj.GetComponent<AgentMove>().startingrepro = Random.Range(startingrepro -.5f, startingrepro + .5f);
+
+            }
             
         }
     }

@@ -60,7 +60,7 @@ public class PlayerSpawner : MonoBehaviour
     private void Update()
     {
         energy -= Time.deltaTime;
-        if (energy < -15f)
+        if (energy < -7f)
         {
             day++;
             energy = 10f;
