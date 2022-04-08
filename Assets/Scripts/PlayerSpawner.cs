@@ -53,7 +53,16 @@ public class PlayerSpawner : MonoBehaviour
     {
         for (var i = 0; i < foodCount; i++)
         {
-            Instantiate(Food, new Vector3(Random.Range(-49f, 49f), 1, Random.Range(-49f, 49f)), Quaternion.identity);
+           Instantiate(Food, new Vector3(Random.Range(-49f, 49f), 1, Random.Range(-49f, 49f)), Quaternion.identity);
+        }
+    }
+
+    private void FoodClean()
+    {
+        GameObject[] food = GameObject.FindGameObjectsWithTag("Food");
+        foreach (GameObject f in food)
+        {
+            Destroy(f);
         }
     }
 
@@ -64,6 +73,7 @@ public class PlayerSpawner : MonoBehaviour
         {
             day++;
             energy = 10f;
+            FoodClean();
             FoodSpawn();
         }
     }

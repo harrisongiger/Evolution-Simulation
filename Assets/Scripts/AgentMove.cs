@@ -18,7 +18,6 @@ public class AgentMove : MonoBehaviour
     int foodcounter;
     [SerializeField]
     float time = 10f;
-    public GameObject[] deletefood;
 
     
     public float startingspeed;
@@ -36,6 +35,10 @@ public class AgentMove : MonoBehaviour
         reproductionrate = startingrepro;
         agent.stoppingDistance = 2;
         startingpos = agent.transform.position;
+        float r = (10.0f - startingspeed) / (10.0f - 2.5f);
+        float b = (10.0f - startingrepro) / (10.0f - 1.0f);
+        float g = (8.0f - startingsense) / (8.0f - 4.0f);
+        agent.GetComponent<Renderer>().material.SetColor("_Color", new Color(r, g, b, 1.0f));
         Wander();
     }
 
@@ -67,14 +70,10 @@ public class AgentMove : MonoBehaviour
                 agent.speed = 20f;
                 if (time < -7f)
                 {
-                agent.speed = startingspeed;
-                energy = 10f;
-                time = 10f;
-                Sex();
-                deletefood = GameObject.FindGameObjectsWithTag("Food");
-                foreach (GameObject Food in deletefood) {
-                    Destroy(gameObject);
-                }
+                    agent.speed = startingspeed;
+                    energy = 10f;
+                    time = 10f;
+                    Sex();
                 }
         } 
             
@@ -132,13 +131,21 @@ public class AgentMove : MonoBehaviour
             obj.GetComponent<AgentMove>().startingspeed = Random.Range(startingspeed -.5f, startingspeed + .5f);
             obj.GetComponent<AgentMove>().startingsense = Random.Range(startingsense -.5f, startingsense + .5f);
             obj.GetComponent<AgentMove>().startingrepro = Random.Range(startingrepro -.5f, startingrepro + .5f);
-
+                    float r = (10.0f - startingspeed) / (10.0f - 2.5f);
+                    float b = (10.0f - startingrepro) / (10.0f - 1.0f);
+                    float g = (8.0f - startingsense) / (8.0f - 4.0f);
+                    obj.GetComponent<Renderer>().material.SetColor("_Color", new Color(r, g, b, 1.0f));
+            
                 }
             } else {
             obj = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity);
             obj.GetComponent<AgentMove>().startingspeed = Random.Range(startingspeed -.5f, startingspeed + .5f);
             obj.GetComponent<AgentMove>().startingsense = Random.Range(startingsense -.5f, startingsense + .5f);
             obj.GetComponent<AgentMove>().startingrepro = Random.Range(startingrepro -.5f, startingrepro + .5f);
+                float r = (10.0f - startingspeed) / (10.0f - 2.5f);
+                float b = (10.0f - startingrepro) / (10.0f - 1.0f);
+                float g = (8.0f - startingsense) / (8.0f - 4.0f);
+                obj.GetComponent<Renderer>().material.SetColor("_Color", new Color(r, g, b, 1.0f));
 
             }
             
